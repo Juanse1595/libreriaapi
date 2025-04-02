@@ -43,6 +43,9 @@ public class AutorServicio {
   public void modificarAutor(UUID id, String nombre) {
     Autor autor = autorRepositorio.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("No existe el autor solicitado"));
+    if (nombre.length() == 0) {
+      throw new IllegalArgumentException("El nombre no puede estar vacio");
+    }
     autor.setNombreAutor(nombre);
     autorRepositorio.save(autor);
   }

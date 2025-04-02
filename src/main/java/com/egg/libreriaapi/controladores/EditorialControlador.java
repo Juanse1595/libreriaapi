@@ -1,10 +1,12 @@
 package com.egg.libreriaapi.controladores;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,17 @@ public class EditorialControlador {
       Editorial editorialCreada = editorialServicio.crearEditorial(nombreEditorial);
       return ResponseEntity.status(HttpStatus.CREATED).body(editorialCreada);
     } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @GetMapping
+  public ResponseEntity<List<Editorial>> listarEditoriales() {
+    try {
+      List<Editorial> editoriales = editorialServicio.buscarTodosEditoriales();
+      return new ResponseEntity<>(editoriales, HttpStatus.OK);
+    } catch (Exception e) {
+      System.out.println("Error: " + e.getMessage());
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
