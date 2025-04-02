@@ -1,5 +1,7 @@
 package com.egg.libreriaapi.servicio;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +10,7 @@ import com.egg.libreriaapi.entidades.Autor;
 import com.egg.libreriaapi.entidades.Editorial;
 import com.egg.libreriaapi.entidades.Libro;
 import com.egg.libreriaapi.modelos.LibroCreateDTO;
+import com.egg.libreriaapi.modelos.LibroListarActivosDTO;
 import com.egg.libreriaapi.repos.LibroRepositorio;
 
 @Service
@@ -37,5 +40,10 @@ public class LibroServicio {
       libroNvo.setEditorial(editorial);
     }
     libroRepositorio.save(libroNvo);
+  }
+
+  @Transactional(readOnly = true)
+  public List<LibroListarActivosDTO> encontrarActivos() {
+    return libroRepositorio.encontrarActivos();
   }
 }
