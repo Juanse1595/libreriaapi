@@ -1,6 +1,7 @@
 package com.egg.libreriaapi.servicio;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +29,8 @@ public class AutorServicio {
   }
 
   @Transactional(readOnly = true)
-  public Autor buscarAutorPorId(String idAutor) {
-    return autorRepositorio.findById(idAutor)
+  public Autor buscarAutorPorId(UUID id) {
+    return autorRepositorio.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("No existe el autor solicitado"));
   }
 
@@ -39,8 +40,11 @@ public class AutorServicio {
   }
 
   @Transactional
-  public void modificarAutor(String nombre) {
-    
+  public void modificarAutor(UUID id, String nombre) {
+    Autor autor = autorRepositorio.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("No existe el autor solicitado"));
+    autor.setNombreAutor(nombre);
+    autorRepositorio.save(autor);
   }
 
   @Transactional

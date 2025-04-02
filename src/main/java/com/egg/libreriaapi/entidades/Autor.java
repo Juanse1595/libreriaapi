@@ -1,5 +1,7 @@
 package com.egg.libreriaapi.entidades;
 
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,9 +13,9 @@ import lombok.Data;
 @Entity(name = "autor")
 public class Autor {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id_autor", length = 255)
-  private String idAutor;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  @Column(name = "id_autor")
+  private UUID idAutor;
 
   @Column(name = "autor_activo", nullable = false)
   private boolean autorActivo;
