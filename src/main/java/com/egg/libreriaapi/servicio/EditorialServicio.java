@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.egg.libreriaapi.entidades.Editorial;
+import com.egg.libreriaapi.modelos.EditorialCreateDTO;
+import com.egg.libreriaapi.modelos.EditorialDTO;
 import com.egg.libreriaapi.repos.EditorialRepositorio;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -27,10 +29,25 @@ public class EditorialServicio {
     return editorialRepositorio.save(editorial);
   }
 
+  @Transactional
+  public void crearEditorial(EditorialCreateDTO editorialDTO) {
+    Editorial nuevaEditorial = new Editorial();
+    nuevaEditorial.setNombreEditorial(editorialDTO.getNombreEditorial());
+    nuevaEditorial.setEditorialActiva(editorialDTO.isEditorialActiva());
+    editorialRepositorio.save(nuevaEditorial);
+  }
+
   @Transactional(readOnly = true)
   public Editorial buscarEditorialPorId(UUID id) {
     return editorialRepositorio.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("No existe el autor solicitado"));
+        .orElseThrow(() -> new EntityNotFoundException("No existe el editorial solicitado"));
+  }
+
+  @Transactional(readOnly = true)
+  public EditorialDTO buscarEditorialPorIdDTO(UUID id) {
+    Editorial editorial = editorialRepositorio.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("No existe esa editorial"));
+    return new EditorialDTO(editorial.getIdEditorial(), editorial.isEditorialActiva(), editorial.getNombreEditorial());
   }
 
   @Transactional(readOnly = true)
